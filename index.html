@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canopy Codex — PD 705 Revised Forestry Code Reviewer</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --moss:#26301c;
+  --moss-2:#33402a;
+  --lichen:#a9b64a;
+  --lichen-light:#d3dc8b;
+  --ember:#b4531f;
+  --ember-light:#d47a45;
+  --parchment:#f2f1dd;
+  --parchment-2:#e6e5c4;
+  --line:#d3d0a2;
+  --ink:#1f2116;
+  --ink-soft:#585a44;
+  --sans:'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --serif:'Spectral', Georgia, 'Times New Roman', serif;
+  --mono:'IBM Plex Mono', monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{ background:var(--moss); color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; }
+::selection{background:var(--lichen-light); color:var(--moss);}
+
+.app{ display:grid; grid-template-columns:260px 1fr; min-height:100vh; }
+@media (max-width:900px){ .app{grid-template-columns:1fr;} }
+
+.sidebar{
+  background:var(--moss); color:#dfe3d0; padding:28px 20px 24px;
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+  border-right:1px solid rgba(211,220,139,0.18);
+}
+@media (max-width:900px){
+  .sidebar{position:static; height:auto; border-right:none; border-bottom:1px solid rgba(211,220,139,0.18); padding:18px 16px;}
+}
+.crest{ display:flex; align-items:center; gap:12px; margin-bottom:22px; }
+.crest-mark{
+  width:44px;height:44px;flex:0 0 44px; border-radius:50%;
+  background:radial-gradient(circle at 32% 28%, var(--lichen-light), var(--lichen) 55%, #6d7a24 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif); font-weight:700; color:var(--moss); font-size:12px;
+  box-shadow:0 0 0 3px rgba(211,220,139,0.15);
+}
+.crest-text .k1{font-family:var(--serif); font-size:19px; font-weight:600; color:#f2f1dd; line-height:1.1;}
+.crest-text .k2{font-size:11px; letter-spacing:.04em; color:#a4ab8b; margin-top:2px;}
+
+.nav-group-label{ font-size:10.5px; text-transform:uppercase; letter-spacing:.11em; color:#858c6c; margin:20px 0 8px; font-weight:600; }
+.nav-group-label:first-of-type{margin-top:4px;}
+nav.tabs{display:flex; flex-direction:column; gap:2px;}
+@media (max-width:900px){ nav.tabs{flex-direction:row; flex-wrap:wrap;} }
+.tab-btn{
+  all:unset; cursor:pointer; display:flex; align-items:center; gap:10px;
+  padding:9px 10px; border-radius:7px; font-size:13.5px; color:#c7cdb2;
+  transition:background .15s ease, color .15s ease;
+}
+.tab-btn:hover{background:rgba(211,220,139,0.08); color:#f2f1dd;}
+.tab-btn.active{background:rgba(211,220,139,0.14); color:#f2f1dd; font-weight:600;}
+.tab-btn .dot{width:6px;height:6px;border-radius:50%;background:#59623f; flex:0 0 6px;}
+.tab-btn.active .dot{background:var(--lichen-light);}
+
+.side-foot{ margin-top:26px; padding-top:16px; border-top:1px solid rgba(211,220,139,0.15); font-size:11px; color:#858c6c; line-height:1.6; }
+
+main.content{ background:var(--parchment); min-height:100vh; }
+.topbar{
+  position:sticky; top:0; z-index:20; background:var(--parchment); border-bottom:1px solid var(--line);
+  padding:16px 32px; display:flex; gap:16px; align-items:center;
+}
+@media (max-width:640px){ .topbar{padding:12px 16px; flex-wrap:wrap;} }
+.search-wrap{flex:1; position:relative; max-width:480px;}
+.search-wrap input{
+  width:100%; padding:10px 14px 10px 36px; border-radius:8px; border:1px solid var(--line);
+  background:#fff; font-family:var(--sans); font-size:13.5px; color:var(--ink); outline:none;
+}
+.search-wrap input:focus{border-color:var(--lichen);}
+.search-wrap svg{position:absolute; left:11px; top:50%; transform:translateY(-50%); opacity:.45;}
+.topbar-title{font-family:var(--serif); font-size:15px; color:var(--ink-soft); margin-left:auto; white-space:nowrap;}
+@media (max-width:640px){ .topbar-title{display:none;} }
+
+.view{padding:32px; max-width:920px; margin:0 auto;}
+@media (max-width:640px){ .view{padding:20px 16px;} }
+.view-header{margin-bottom:26px;}
+.eyebrow-row{display:flex; align-items:center; gap:10px; margin-bottom:8px;}
+.badge-pill{ font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; background:var(--moss); color:var(--lichen-light); padding:3px 9px; border-radius:20px; }
+h1.view-title{font-family:var(--serif); font-size:32px; font-weight:600; margin:0 0 8px; color:var(--moss); line-height:1.15;}
+p.view-sub{font-size:14.5px; color:var(--ink-soft); max-width:62ch; line-height:1.6; margin:0;}
+
+.stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:24px 0 30px;}
+@media (max-width:700px){ .stat-row{grid-template-columns:repeat(2,1fr);} }
+.stat-card{ background:#fff; border:1px solid var(--line); border-radius:10px; padding:16px; }
+.stat-card .n{font-family:var(--serif); font-size:26px; color:var(--ember); font-weight:600; line-height:1;}
+.stat-card .l{font-size:11.5px; color:var(--ink-soft); margin-top:6px;}
+
+.home-timeline{border-left:2px solid var(--line); margin-left:8px; padding-left:22px; display:flex; flex-direction:column; gap:20px;}
+.tl-item{position:relative;}
+.tl-item::before{
+  content:''; position:absolute; left:-28.5px; top:3px; width:11px; height:11px; border-radius:50%;
+  background:var(--lichen); border:2px solid var(--parchment); box-shadow:0 0 0 2px var(--lichen);
+}
+.tl-date{font-family:var(--mono); font-size:12px; color:var(--ember); font-weight:600;}
+.tl-title{font-family:var(--serif); font-size:16.5px; font-weight:600; color:var(--moss); margin:2px 0 3px;}
+.tl-desc{font-size:13.5px; color:var(--ink-soft); line-height:1.55; max-width:64ch;}
+
+.quicklinks{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:26px;}
+@media (max-width:640px){ .quicklinks{grid-template-columns:1fr;} }
+.qlink{ display:block; text-decoration:none; background:#fff; border:1px solid var(--line); border-radius:10px; padding:16px 18px; cursor:pointer; transition:border-color .15s, transform .1s; }
+.qlink:hover{border-color:var(--lichen);}
+.qlink .qt{font-family:var(--serif); font-weight:600; color:var(--moss); font-size:15px;}
+.qlink .qd{font-size:12.5px; color:var(--ink-soft); margin-top:4px;}
+
+.article-block{margin-bottom:34px;}
+.article-heading{
+  font-family:var(--serif); font-size:19px; font-weight:600; color:var(--moss);
+  padding-bottom:8px; margin-bottom:14px; border-bottom:2px solid var(--lichen);
+  display:flex; align-items:baseline; gap:10px;
+}
+.article-heading .tag{font-family:var(--mono); font-size:11px; color:var(--ember); font-weight:600;}
+
+.sec-card{ background:#fff; border:1px solid var(--line); border-radius:10px; margin-bottom:10px; overflow:hidden; }
+.sec-head{ all:unset; box-sizing:border-box; cursor:pointer; width:100%; display:flex; align-items:center; gap:12px; padding:14px 16px; }
+.sec-num{ font-family:var(--mono); font-size:12px; color:#fff; background:var(--moss); padding:3px 8px; border-radius:5px; flex:0 0 auto; white-space:nowrap; }
+.sec-title{font-family:var(--serif); font-weight:600; font-size:15px; color:var(--ink); flex:1;}
+.sec-chevron{transition:transform .2s ease; color:var(--ink-soft); flex:0 0 auto;}
+.sec-card.open .sec-chevron{transform:rotate(180deg);}
+.sec-body{ max-height:0; overflow:hidden; transition:max-height .25s ease; padding:0 16px; }
+.sec-card.open .sec-body{padding:0 16px 16px;}
+.sec-body-inner{font-size:14px; line-height:1.65; color:var(--ink);}
+.sec-body-inner p{margin:0 0 10px;}
+.sec-body-inner ul{margin:0 0 10px; padding-left:20px;}
+.sec-body-inner li{margin-bottom:5px;}
+.kw{ background:linear-gradient(transparent 60%, var(--lichen-light) 60%); font-weight:600; }
+.trap-box{ background:#f8ebe1; border-left:3px solid var(--ember); border-radius:6px; padding:10px 12px; font-size:13px; color:#5b2510; margin-top:8px; display:flex; gap:8px; }
+.trap-box .lbl{font-family:var(--mono); font-weight:700; font-size:10.5px; color:var(--ember); white-space:nowrap; padding-top:1px;}
+
+.glossary-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+.g-card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
+.g-term{font-family:var(--serif); font-weight:700; color:var(--moss); font-size:15px;}
+.g-abbr{font-family:var(--mono); font-size:11px; color:var(--ember); margin-left:6px;}
+.g-def{font-size:13.5px; color:var(--ink-soft); margin-top:4px; line-height:1.55;}
+
+.people-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+@media (max-width:640px){ .people-grid{grid-template-columns:1fr;} }
+.p-card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:16px;}
+.p-name{font-family:var(--serif); font-weight:700; color:var(--moss); font-size:16px;}
+.p-role{font-size:11.5px; color:var(--ember); font-weight:600; margin:2px 0 8px; text-transform:uppercase; letter-spacing:.03em;}
+.p-desc{font-size:13px; color:var(--ink-soft); line-height:1.55;}
+
+.trap-list{display:flex; flex-direction:column; gap:10px;}
+.trap-item{ background:#fff; border:1px solid var(--line); border-left:4px solid var(--ember); border-radius:8px; padding:14px 16px; }
+.trap-item .tnum{font-family:var(--mono); font-size:11px; color:var(--ember); font-weight:700;}
+.trap-item .ttitle{font-family:var(--serif); font-weight:600; font-size:14.5px; color:var(--moss); margin:3px 0 4px;}
+.trap-item .tbody{font-size:13.5px; color:var(--ink-soft); line-height:1.55;}
+
+.quiz-box{background:#fff; border:1px solid var(--line); border-radius:12px; padding:22px;}
+.quiz-progress{font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); margin-bottom:10px;}
+.quiz-q{font-family:var(--serif); font-size:17px; font-weight:600; color:var(--moss); margin-bottom:16px; line-height:1.4;}
+.quiz-opts{display:flex; flex-direction:column; gap:8px;}
+.quiz-opt{
+  all:unset; box-sizing:border-box; cursor:pointer; display:block; padding:11px 14px;
+  border:1px solid var(--line); border-radius:8px; font-size:13.5px; transition:border-color .15s, background .15s;
+}
+.quiz-opt:hover{border-color:var(--lichen);}
+.quiz-opt.correct{background:#eaf3ea; border-color:#4c6b52; color:#284a2c; font-weight:600;}
+.quiz-opt.wrong{background:#f8ebe1; border-color:var(--ember); color:#5b2510; font-weight:600;}
+.quiz-opt.disabled{pointer-events:none;}
+.quiz-explain{ margin-top:14px; padding:12px 14px; background:var(--parchment-2); border-radius:8px; font-size:13px; color:var(--ink-soft); line-height:1.55; display:none; }
+.quiz-explain.show{display:block;}
+.quiz-nav{display:flex; justify-content:space-between; align-items:center; margin-top:18px;}
+.btn{ all:unset; cursor:pointer; font-family:var(--sans); font-weight:600; font-size:13px; background:var(--moss); color:#f2f1dd; padding:10px 18px; border-radius:7px; }
+.btn:hover{background:var(--moss-2);}
+.btn.ghost{background:transparent; color:var(--ink-soft); border:1px solid var(--line);}
+.quiz-score{font-family:var(--serif); font-size:22px; color:var(--moss); text-align:center; padding:20px 0;}
+.quiz-score .sub{font-family:var(--sans); font-size:13px; color:var(--ink-soft); font-weight:400; margin-top:6px;}
+
+.hidden{display:none !important;}
+.nores{padding:40px 0; text-align:center; color:var(--ink-soft); font-size:14px;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="crest">
+      <div class="crest-mark">PD705</div>
+      <div class="crest-text">
+        <div class="k1">Canopy Codex</div>
+        <div class="k2">Forestry Code · REB &amp; REA</div>
+      </div>
+    </div>
+
+    <div class="nav-group-label">Reviewer</div>
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="home"><span class="dot"></span>Overview</button>
+      <button class="tab-btn" data-tab="law"><span class="dot"></span>PD 705 — The Code</button>
+      <button class="tab-btn" data-tab="rules"><span class="dot"></span>Forest vs. A&amp;D Land</button>
+      <button class="tab-btn" data-tab="related"><span class="dot"></span>Amendments &amp; Related Laws</button>
+    </nav>
+
+    <div class="nav-group-label">Study Aids</div>
+    <nav class="tabs">
+      <button class="tab-btn" data-tab="people"><span class="dot"></span>Dates &amp; People</button>
+      <button class="tab-btn" data-tab="glossary"><span class="dot"></span>Glossary of Terms</button>
+      <button class="tab-btn" data-tab="traps"><span class="dot"></span>Board Exam Traps</button>
+      <button class="tab-btn" data-tab="quiz"><span class="dot"></span>Self-Test Quiz</button>
+    </nav>
+
+    <div class="side-foot">
+      Built for BSREM review — High-Yield for REB General/Fundamentals and REA Land Management &amp; Real Property Laws. Section-level content for Secs. 1–38 follows the text of PD 705 as amended by PD 1559; later sections are summarized by heading or key rule only. Verify case citations and post-1978 amendments against official sources before your exam.
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="topbar">
+      <div class="search-wrap">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="searchInput" type="text" placeholder="Search sections, terms, dates, traps…">
+      </div>
+      <div class="topbar-title" id="topbarTitle">Overview</div>
+    </div>
+
+    <div class="view" id="viewRoot"></div>
+  </main>
+</div>
+
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+
+const timeline = [
+  {date:"Dec 1936", title:"CA 141 sets the 3-way classification", desc:"The Public Land Act (Sec. 6) lets the President classify public land as alienable/disposable, timber, or mineral — the statutory root of the classification system PD 705 later builds on."},
+  {date:"1974", title:"PD 389 — Forestry Reform Code", desc:"The earlier forestry code that PD 705 revises."},
+  {date:"May 19, 1975", title:"PD 705 issued", desc:"President Ferdinand E. Marcos issues the Revised Forestry Code of the Philippines, revising PD 389. It also repeals CA 452 (the Pasture Land Act) and inconsistent laws and rules."},
+  {date:"Dec 29, 1975", title:"First amendment", desc:"PD 865 amends PD 705 (log production/export rules among its changes)."},
+  {date:"Jun 11, 1978", title:"PD 1559 — the major amendment", desc:"Amends Secs. 3, 11, 14, 17, 20, 22, 26 and 30, and later provisions on penalties. The version of PD 705 most commonly cited today is \u201cas amended by PD 1559.\u201d"},
+  {date:"Apr 5, 1984", title:"BP 701", desc:"Exempts private landowners' tree farms of 50 hectares or less (planted to Ipil-ipil and other fast-growing trees) from inventory requirements before harvest, subject to a certificate of origin for transport."},
+  {date:"Jun 10, 1987", title:"EO 192 creates the DENR", desc:"The Department of Environment and Natural Resources succeeds the old Department of Natural Resources — so \u201cDepartment Head\u201d in PD 705 now means the DENR Secretary."},
+  {date:"Jul 25, 1987", title:"EO 277", desc:"Amends Sec. 68 (unauthorized cutting) to add the term \u201cpossession,\u201d and adds Secs. 68-A and 68-B (enforcement/seizure)."},
+  {date:"1991", title:"RA 7161 renumbers the penal sections", desc:"Original Sec. 68 (cutting without license) becomes Sec. 77 and original Sec. 69 (unlawful occupation) becomes Sec. 78 in annotated versions — a common source of citation confusion."},
+  {date:"1992 / 2018", title:"NIPAS and E-NIPAS", desc:"RA 7586 (NIPAS, 1992) and RA 11038 (Expanded NIPAS, 2018) layer protected-area rules on top of forest land classification."},
+  {date:"Jul 19, 1995", title:"EO 263 — Community-Based Forest Management", desc:"Adopts CBFM as the national strategy for forestlands, shifting from large timber concessions toward community-managed forests."},
+  {date:"Feb 1, 2011", title:"EO 23 — logging moratorium", desc:"Declares a moratorium on cutting and harvesting of timber in natural and residual forests nationwide."},
+  {date:"Jul 16, 2021", title:"RA 11573", desc:"Simplifies proof that land is alienable and disposable (DENR geodetic engineer's certification) — a reform that works alongside, not against, PD 705's rule that forest land can't be titled."},
+];
+
+const people = [
+  {name:"Pres. Ferdinand E. Marcos", role:"Issued PD 705 (May 19, 1975)", desc:"Issued the decree under martial law, revising PD 389 (the earlier Forestry Reform Code)."},
+  {name:"The \u201cDepartment Head\u201d", role:"Sole classification authority (Sec. 13)", desc:"Originally the Secretary of Natural Resources; today the DENR Secretary. Prescribes criteria and methods for classifying public land, declares land needed for forest purposes as permanent forest, and declares the rest alienable and disposable."},
+  {name:"Director, Bureau of Forest Development", role:"Original implementing officer", desc:"Must be a natural-born citizen, at least 30 years old, hold a Bachelor's degree in Forestry (or equivalent), and be a registered forester (Sec. 6). Today's counterpart is the Forest Management Bureau (FMB) under the DENR."},
+  {name:"The President", role:"Reservations &amp; final appeal (Secs. 8, 18)", desc:"May establish forest reserves, national parks, and marine parks (Sec. 18); DENR Secretary decisions become final after 30 days unless appealed to the President (Sec. 8)."},
+  {name:"Forest officers", role:"Arrest and seizure (Sec. 80)", desc:"May arrest without a warrant anyone committing a forestry offense in their presence, and must deliver the offender and confiscated items within 6 hours to the proper official."},
+  {name:"Solicitor General", role:"Reversion of improperly titled land", desc:"Acts for the Republic in reversion suits over land wrongly titled (see CA 141 Sec. 101) — the usual route when a title is issued over forest land."},
+  {name:"Director of Forestry v. Mu\u00f1oz (1968)", role:"Landmark case (G.R. No. L-24796)", desc:"Forest land is not capable of private appropriation; possession, however long, cannot ripen into ownership. Verify citation before use."},
+  {name:"Heirs of Amunategui v. Director of Forestry (1983)", role:"Landmark case (G.R. No. L-27873)", desc:"Classification as forest land depends on the land's legal classification, not on whether trees are actually growing — a logged-over or cleared area stays forest land until properly reclassified. Verify citation before use."},
+  {name:"Republic v. T.A.N. Properties (2008)", role:"Landmark case (G.R. No. 154953)", desc:"A CENRO/PENRO certification alone does not prove land is alienable and disposable; the proper classification must be shown. RA 11573 (2021) has since changed the proof rules. Verify citation before use."},
+];
+
+const glossary = [
+  {term:"Public forest", abbr:"Sec. 3(a)", def:"The mass of public-domain land that has NOT yet been through the classification system to decide whether it is needed for forest purposes. Unclassified land remains public forest."},
+  {term:"Permanent forest / forest reserve", abbr:"Sec. 3(b)", def:"Public-domain land that HAS been classified and declared needed for forest purposes."},
+  {term:"Alienable and disposable (A&D) land", abbr:"Sec. 3(c)", def:"Public-domain land that has been classified and declared NOT needed for forest purposes — the only public land that can be privately acquired."},
+  {term:"Forest land", abbr:"Sec. 3(d)", def:"Includes the public forest, the permanent forest or forest reserves, and forest reservations."},
+  {term:"Forest reservation", abbr:"Sec. 3(g)", def:"Forest land reserved by the President for a specific purpose (national park, watershed, wildlife sanctuary, etc.)."},
+  {term:"Grazing land", abbr:"Sec. 3(e)", def:"Public land set aside, because of its topography and vegetation, for raising livestock. No forest land 50% slope or over may be classified as grazing land."},
+  {term:"Kaingin", abbr:"Sec. 3(p)", def:"Part of forest land subjected to shifting and/or permanent slash-and-burn cultivation — a punishable act when done without authority (Sec. 69)."},
+  {term:"License agreement", abbr:"Sec. 3(ee)", def:"A privilege to use forest resources WITH the right of possession and occupation to the exclusion of others (except the government), with a duty to develop, protect and rehabilitate the area."},
+  {term:"License", abbr:"Sec. 3(dd)", def:"A privilege to use forest resources WITHOUT any right of occupation or possession, or to operate a wood-processing plant."},
+  {term:"Lease", abbr:"Sec. 3(cc)", def:"A privilege to occupy and possess forest land for a specified rental in order to carry out an authorized activity."},
+  {term:"Permit", abbr:"Sec. 3(ff)", def:"A short-term privilege to use limited forest resources or do a limited activity, WITHOUT any right of occupation or possession."},
+  {term:"Annual allowable cut (AAC)", abbr:"Sec. 3(gg)", def:"The volume of wood or forest products authorized to be cut each year from a forest."},
+  {term:"Private right", abbr:"Sec. 3(mm)", def:"Titled rights of ownership under existing laws; for national minorities, possession rights existing when a license is granted — including places of abode and worship, burial grounds and old clearings, but excluding productive forest, logged-over areas, commercial forests and established tree plantations."},
+  {term:"Industrial tree plantation / tree farm / agro-forestry farm", abbr:"Sec. 3(t)(u)(v)", def:"Forest land planted to trees (or trees combined with crops/animals) as a raw-material source for wood processing — leased for 50 years under Sec. 34."},
+  {term:"Sustained-yield management", abbr:"Sec. 3(aa)", def:"Continuous or periodic production of forest products aiming for an approximate balance between growth and harvest or use."},
+  {term:"Critical watershed", abbr:"Sec. 3(n)", def:"A drainage area supporting existing or proposed hydro-electric power, irrigation works or domestic water facilities and needing immediate protection or rehabilitation."},
+  {term:"Land classification (LC) map", abbr:"Practice term", def:"The official DENR map showing which areas are A&D and which are forest land. A practical first check when appraising or brokering rural land."},
+];
+
+/* ---------- PD 705 by part ---------- */
+const raArticles = [
+{
+  heading:"Title, Policies &amp; Definitions",
+  tag:"Secs. 1–3",
+  sections:[
+    {num:"Sec. 1", title:"Title", body:"<p>Known as the <span class='kw'>\u201cRevised Forestry Code of the Philippines.\u201d</span> Issued May 19, 1975 as a revision of PD 389.</p>"},
+    {num:"Sec. 2", title:"Policies", body:"<p>Four State policies: <b>(a)</b> multiple uses of forest lands oriented to national development, science and public welfare; <b>(b)</b> land classification and survey to be systematized and hastened; <b>(c)</b> wood-processing plants to be encouraged and rationalized; <b>(d)</b> protection, development and rehabilitation of forest lands to be emphasized so they stay productive.</p>"},
+    {num:"Sec. 3", title:"Definitions — the classification vocabulary", body:"<p>The definitions decide most exam questions. Key ones: <b>public forest</b> (unclassified public land) vs. <b>permanent forest/forest reserve</b> (classified as needed for forest purposes) vs. <b>alienable or disposable land</b> (classified as NOT needed for forest purposes). <span class='kw'>\u201cForest land\u201d = the public forest + permanent forest + forest reservations.</span> It also defines national park, game refuge, marine park, seashore park, watershed, critical watershed, mangrove, kaingin, forest product, and the four instruments — lease, license, license agreement, permit.</p>", trap:"Unclassified public land is NOT alienable. Until it is classified and declared A&D, it stays \u201cpublic forest\u201d and counts as forest land under Sec. 3(d)."}
+  ]
+},
+{
+  heading:"Organization &amp; Jurisdiction of the Bureau",
+  tag:"Secs. 4–12",
+  sections:[
+    {num:"Sec. 4", title:"Bureau of Forest Development", body:"<p>Merges the Bureau of Forestry, the Reforestation Administration, the Southern Cebu Reforestation Development Project, and the Parks and Wildlife Office into one agency, the <span class='kw'>Bureau of Forest Development</span> (today's Forest Management Bureau, under the DENR).</p>"},
+    {num:"Sec. 5", title:"Jurisdiction", body:"<p>The Bureau has jurisdiction over <span class='kw'>all forest land, grazing lands, and all forest reservations</span> (including watershed reservations) — including those previously run by other agencies. It handles protection, development, management, regeneration and reforestation; supervises licensees, lessees and permittees; prevents kaingin; regulates sawmills and wood-processing plants; and, with other bureaus, helps classify public land.</p>"},
+    {num:"Sec. 6", title:"Director — qualifications", body:"<p>Appointed by the President. Must be a <span class='kw'>natural-born citizen, at least 30 years old, hold at least a Bachelor's degree in Forestry (or equivalent), and be a registered forester.</span></p>"},
+    {num:"Secs. 7–9", title:"Supervision, review, and rules", body:"<p>The Bureau is under the Department Head. Director's decisions are reviewable by the Department Head, whose decision becomes <span class='kw'>final and executory after 30 days</span> unless appealed to the President; courts may review it only through a special civil action for certiorari or prohibition. The Department Head issues implementing rules on the Director's recommendation.</p>", trap:"The 30-day period runs from receipt of the Department Head's decision by the aggrieved party — after that, only the President (by appeal) or a certiorari/prohibition petition can disturb it."},
+    {num:"Secs. 10–12", title:"Offices, training, evaluation", body:"<p>Creates functional divisions and <span class='kw'>at least eleven regional offices</span> with forest districts following watershed boundaries where possible; sets up in-service training and a Forestry Development Center at UP Los Ba\u00f1os; requires a performance-evaluation system.</p>"}
+  ]
+},
+{
+  heading:"Classification &amp; Survey",
+  tag:"Secs. 13–18 — the core of the exam topic",
+  sections:[
+    {num:"Sec. 13", title:"System of land classification", body:"<p>The <span class='kw'>Department Head</span> studies, devises and prescribes the criteria, guidelines and methods for classifying and surveying all public-domain land into agricultural, industrial/commercial, residential, resettlement, mineral, timber or forest, and grazing land. The Department Head also determines which unclassified land is needed for forest purposes and declares it <span class='kw'>permanent forest</span>; land not needed is decreed <span class='kw'>alienable and disposable</span> and transferred to the Bureau of Lands. Mangrove and swamp land not needed for shore protection and suitable for fishponds goes to the Bureau of Fisheries and Aquatic Resources. Land still to be classified <span class='kw'>remains public forest</span>.</p>", trap:"Classification is an EXECUTIVE act by the Department Head (and, under CA 141 Sec. 6, the President). Neither a court nor a private survey nor the land's appearance can reclassify public land."},
+    {num:"Sec. 14", title:"Pasture leases in forest lands (as amended)", body:"<p>Forest land that is <b>not a reservation</b> and is under a <span class='kw'>pasture lease</span> is classified as grazing land; areas under a <span class='kw'>pasture permit</span> stay forest land until properly classified. Administration of grazing land remains with the Bureau.</p>", trap:"Lease vs. permit again: pasture LEASE areas become grazing land; pasture PERMIT areas remain forest land."},
+    {num:"Sec. 15", title:"Topography — 18% and 50%", body:"<p>No public land <span class='kw'>18% in slope or over</span> may be classified as alienable and disposable, and no forest land <span class='kw'>50% in slope or over</span> may be classified as grazing land. Land 18% or over already declared A&amp;D is <b>reverted to forest land</b> UNLESS it is (a) covered by existing titles or approved public land applications, or (b) actually occupied openly, continuously, adversely and publicly for <span class='kw'>at least 30 years as of the Code's effectivity</span> by an occupant qualified for a free patent. Such land not in a well-established community must be kept vegetated to prevent erosion. When public interest requires, the State may expropriate, cancel defective titles, reject applications, or eject occupants.</p>", trap:"18% (A&D ceiling) and 50% (grazing ceiling) are two different thresholds for two different classifications. Also, the 30-year exception is measured AS OF PD 705's effectivity (1975), not from today."},
+    {num:"Sec. 16", title:"Areas needed for forest purposes (even below 18%)", body:"<p>These may NOT be classified as A&amp;D even if below 18% slope: <b>(1)</b> areas under <span class='kw'>250 hectares</span> far from or not contiguous with certified A&amp;D land; <b>(2)</b> isolated forest patches of at least <span class='kw'>5 hectares</span> with rocky terrain or protecting a communal spring; <b>(3)</b> areas already reforested; <b>(4)</b> timbered areas in forest concessions supporting an existing or approved wood-processing plant; <b>(5)</b> ridge tops and plateaus (any size) where headwaters emanate; <b>(6)</b> appropriately located road rights-of-way; <b>(7)</b> <span class='kw'>20-meter strips</span> along the high waterline of rivers and streams with channels at least 5 meters wide; <b>(8)</b> mangrove/swamp strips at least 20 meters wide facing oceans, lakes and other water bodies (and 20-meter strips facing lakes); <b>(9)</b> areas for national parks, historical sites, game refuges, forest stations and other public-interest uses; <b>(10)</b> areas already proclaimed as forest reserves, national parks, refuges, sanctuaries, shrines or historic sites. If such an area has been titled, steps may be taken — when public interest requires — to <span class='kw'>cancel or amend the title or expropriate</span>.</p>", trap:"The numbers to keep straight: 250 ha (isolated areas), 5 ha (rocky/spring patches), 5 m (river channel width), 20 m (strip width). A title over such land is not immune — Sec. 16 itself allows cancellation."},
+    {num:"Sec. 17", title:"Boundaries of forest lands", body:"<p>Boundaries between permanent forests and A&amp;D land must be marked on the ground with infrastructure, roads, or <span class='kw'>concrete monuments at intervals of not more than 500 meters</span>, or other visible signs. In boundary conflicts, the Coast and Geodetic Survey topographic map is the reference.</p>"},
+    {num:"Sec. 18", title:"Reservations", body:"<p>The <span class='kw'>President</span> may establish forest reserves and reservations (national parks, critical watersheds, other purposes) and modify existing boundaries. The Department Head may set aside parts of public forest as experimental forest for the Forest Research Institute. When public interest requires, offshore areas may be set up as <b>marine parks</b>.</p>"}
+  ]
+},
+{
+  heading:"Utilization &amp; Management",
+  tag:"Secs. 19–36",
+  sections:[
+    {num:"Secs. 19–21", title:"Multiple use, authority to operate, sustained yield", body:"<p>Forest and grazing land uses are weighed for optimum public benefit with the least injury to resources. <span class='kw'>No one may use, occupy or operate in forest or grazing land, or run a wood-processing plant, without a license agreement, license, lease or permit</span> (Sec. 20). The President may amend or rescind any privilege when national interest requires, and may summarily suspend one pending hearing for violations (e.g., reforestation, pollution). Critical watersheds, national parks and experimental forests are closed to commercial logging or grazing.</p>"},
+    {num:"Sec. 22", title:"Silvicultural systems and replanting", body:"<p>Dipterocarp forest: <b>selective logging</b>. Pine or mangrove forest: <b>seed tree system</b>. An authorized person must <span class='kw'>plant three trees of the same variety for every tree cut or destroyed</span>; violation is sufficient ground for immediate cancellation of the license, agreement, lease or permit.</p>"},
+    {num:"Secs. 23–26", title:"Inventory, cutting cycle, annual allowable cut", body:"<p>The Bureau conducts progressive inventories until 100% coverage. No timber harvest without at least a <span class='kw'>5% timber inventory made not earlier than 5 years</span> before the license issues. Cutting cycle and annual allowable cut are set from the area, volume, healthy residuals and rotation; no one may cut, gather or collect forest products without authority AND a granted annual allowable cut.</p>"},
+    {num:"Sec. 27", title:"Duration of a timber license", body:"<p>Maximum of <span class='kw'>25 years, renewable for up to 25 more</span> (as needed to harvest the remaining commercial timber). The privilege ends early once harvestable timber is used up without leaving commercially usable logged-over area. Continued privilege requires the licensee to reforest areas the Bureau designates.</p>"},
+    {num:"Sec. 28", title:"Size of forest concessions", body:"<p><span class='kw'>Forest lands shall not be held in perpetuity.</span> The area is limited to what a person can effectively utilize and develop over <span class='kw'>50 years</span>, given cutting cycle, past performance, capacity to protect and manage, and processing-plant needs.</p>", trap:"25+25 (license duration, Sec. 27) and 50 (basis for concession size, Sec. 28) both involve the number 50 but measure different things — don't mix them."},
+    {num:"Secs. 29–32", title:"Wood industry incentives, rationalization, log exports", body:"<p>The wood industry is encouraged but rationalized: no new or expanded plant without environmental review and a <b>sustained-yield raw-material supply</b> (Sec. 30). Logs are to be processed locally; the total of log exports by licensees may not exceed <span class='kw'>25% of the total national allowable cut</span>, and no export permit issues to anyone who has not complied with replanting/reforestation duties (Sec. 32).</p>"},
+    {num:"Sec. 33", title:"Lands to be reforested", body:"<p>Public forest lands to be reforested include bare or grass-covered tracts, brushlands, open tracts with patches of forest, denuded reserves, inadequately stocked concession areas, portions of pasture leases needing reforestation, and river banks, road rights-of-way, deltas, swamps, former river beds and beaches. On private lands, areas required to be planted to trees under PD 953, PD 1153 and other laws.</p>"},
+    {num:"Secs. 34–36", title:"Industrial tree plantations, tree farms, agro-forestry farms", body:"<p>The Department Head may grant a <span class='kw'>50-year lease</span> of qualifying forest land for an industrial tree plantation, tree farm or agro-forestry farm — minimum <span class='kw'>100 hectares</span> for plantations and agro-forestry farms and <span class='kw'>10 hectares</span> for tree farms. Trees planted belong to the lessee. Incentives (Sec. 36) include nominal filing fees, rent-free early years, reduced forest charges (25% of the regular rate), and tax exemptions. Private landowners with tree farms of 50 ha or less enjoy a further exemption from inventory requirements under BP 701.</p>"}
+  ]
+},
+{
+  heading:"Forest Protection, Enforcement &amp; Penal Provisions",
+  tag:"Secs. 37–80 (key provisions)",
+  sections:[
+    {num:"Secs. 37–38", title:"Protection and control of concession area", body:"<p>All measures must be taken to protect forest resources from destruction, impairment and depletion. Timber may be harvested only under <span class='kw'>license agreements</span>, whose holders get exclusive cutting privileges, occupation and control (against everyone except the government) and the duty to protect and conserve the area.</p>"},
+    {num:"Other headings", title:"Provisions I did not itemize", body:"<p>Later sections include, by heading: Sec. 39 (regulation of timber utilization), Sec. 43 (swamplands and mangrove forests), Sec. 48 (mineral reservations), Sec. 49 (roads and infrastructure built with least impairment), Sec. 53 (criminal prosecution), Sec. 54 (pasture in forest lands), Sec. 57 (other special uses), Sec. 61 (transfers), Sec. 62 (service contracts), and Sec. 71 (charges on firewood). Consult the full text for their content.</p>"},
+    {num:"Sec. 64", title:"Equity sharing", body:"<p>Corporations holding licenses, leases or permits must formulate a plan to sell at least <span class='kw'>10% of their subscribed capital stock</span> to employees, laborers and the general public within 6 years of operation or one year after the Decree's effectivity.</p>"},
+    {num:"Sec. 68 (now Sec. 77)", title:"Cutting, gathering or collecting timber without license", body:"<p>Anyone who cuts, gathers, collects or removes timber or other forest products from forest land — or from other public or private land — without the required authority is punished under <span class='kw'>Articles 309 and 310 of the Revised Penal Code</span> (theft and qualified theft), with confiscation of the timber, equipment and tools, and forfeiture of improvements. EO 277 (1987) added <b>possession</b> of such products without legal documents as an offense.</p>", trap:"Sec. 68 was renumbered Sec. 77 (and Sec. 69 became Sec. 78) in annotated versions by RA 7161. If a question cites either number, make sure you know which numbering it uses."},
+    {num:"Sec. 69 (now Sec. 78)", title:"Unlawful occupation or destruction of forest lands", body:"<p>Anyone who enters, occupies or possesses forest or grazing land, or makes <b>kaingin</b>, without authority — or destroys the land or its timber stand, sets or negligently permits a fire, aids others in doing so, or refuses to vacate when ordered — is fined <span class='kw'>\u20b1500 to \u20b120,000</span>, imprisoned <span class='kw'>6 months to 2 years</span> for each offense, and made liable for <span class='kw'>ten times the rental fees and other charges</span> for the use of the land, plus damages.</p>"},
+    {num:"Sec. 76", title:"Coercion and influence", body:"<p>Anyone who coerces, influences, abets or persuades a public officer to commit the improper survey, classification or release acts penalized by the preceding sections faces imprisonment of not less than 1 year and a fine of \u20b1500 for every hectare or fraction improperly surveyed, classified or released. (Numbering subject to the RA 7161 renumbering — verify.)</p>"},
+    {num:"Sec. 78 (orig.)", title:"Unpaid forest charges", body:"<p>Failure to pay amounts due under the Code or the National Internal Revenue Code triggers a <span class='kw'>25% surcharge</span> on the unpaid amount (original numbering; renumbered in later annotations).</p>"},
+    {num:"Sec. 79 (orig.)", title:"Sale of wood products", body:"<p>No one may sell logs, lumber, plywood or other manufactured wood products, locally or abroad, without complying with grading rules. Falsifying volume or failing grading standards is ground to suspend the export, sawmill or other license for <span class='kw'>not less than 2 years</span>. Lumber and building-material dealers must issue invoices stating the kind, standard and size sold.</p>"},
+    {num:"Sec. 80", title:"Arrest without warrant", body:"<p>A forest officer or Bureau employee <span class='kw'>shall arrest, even without a warrant</span>, anyone committing a forestry offense in his presence, and must deliver the offender and the confiscated products, tools and equipment (and file the complaint) with the proper official within <span class='kw'>6 hours</span> of the arrest and seizure. If the arrest is made far from such officials, the delivery is made to the nearest one.</p>"}
+  ]
+}
+];
+
+/* ---------- Forest vs. A&D Land — deep dive ---------- */
+const rulesArticles = [
+{
+  heading:"The Rule in Plain Terms",
+  tag:"Core exam concept",
+  sections:[
+    {num:"Rule 1", title:"All unclassified public land is forest land", body:"<p>Under Sec. 3(a) and 3(d), public-domain land that has not been classified is \u201cpublic forest,\u201d and public forest is forest land. Only land that has gone through classification AND been declared <span class='kw'>alienable and disposable</span> may leave the State's hands (through the modes in CA 141 — homestead, sale, lease, free patent, or judicial confirmation).</p>"},
+    {num:"Rule 2", title:"Classification belongs to the executive branch", body:"<p>Sec. 13 of PD 705 gives the power to prescribe criteria and classify to the <span class='kw'>Department Head</span> (now the DENR Secretary), and CA 141 Sec. 6 gives the President power to classify and reclassify. Courts don't classify, and possession, tax declarations, surveys and improvements don't change a classification.</p>", trap:"\u201cDENR as sole classification authority\u201d is best remembered as: classification is an administrative/executive power (President, acting through the DENR Secretary) — never a judicial or private one."},
+    {num:"Rule 3", title:"Forest land cannot be titled", body:"<p>Forest land is inalienable. It cannot be the subject of homestead, sale, free patent or judicial confirmation, and <span class='kw'>no length of possession</span> can ripen into ownership while it remains forest land. A title issued over forest land is void and may be cancelled and the land reverted to the State. Only after the proper authority declares the area alienable and disposable can the CA 141 modes begin to operate.</p>", trap:"Long possession only matters for land that is ALREADY A&D. Occupying forest land for 30 or 50 years creates no ownership right — the clock doesn't even start."},
+    {num:"Rule 4", title:"Legal classification, not physical appearance, controls", body:"<p>The Supreme Court's approach (e.g., <i>Amunategui</i>, 1983): a hillside stripped of trees, planted to crops, or dotted with houses is still forest land if it has never been reclassified. Likewise, a wooded lot can be A&amp;D if it was properly declared so. Always check the classification, not the scenery.</p>"}
+  ]
+},
+{
+  heading:"The Physical Tests — Slope and Location",
+  tag:"Sec. 15 &amp; 16 numbers",
+  sections:[
+    {num:"18%", title:"Slope ceiling for A&D land", body:"<p>Public land <span class='kw'>18% in slope or over</span> cannot be classified as A&amp;D (Sec. 15). The same 18% threshold appears in RA 6657 Sec. 10, which excludes land with 18% slope or over from CARP coverage (unless already developed) — related but separate rules in two different laws.</p>"},
+    {num:"50%", title:"Slope ceiling for grazing land", body:"<p>Forest land <span class='kw'>50% in slope or over</span> cannot be classified as grazing land — a different threshold for a different classification.</p>"},
+    {num:"Sec. 16 list", title:"Below 18% but still forest", body:"<p>Even flat land may be needed for forest purposes: small isolated areas under 250 ha, rocky or spring-protecting patches of 5 ha or more, reforested areas, headwater ridge tops, 20-meter river and mangrove/lake-front strips, and areas already proclaimed as reserves, parks or sanctuaries. Titles over these can be cancelled if public interest requires.</p>", trap:"When a lot is flat but near a river, shoreline, or reserve, a Sec. 16 strip may still be forest land — always confirm with the LC map, not just a slope reading."},
+    {num:"Vested rights", title:"The 30-year exception (Sec. 15)", body:"<p>Land 18%-or-over that was <i>already declared A&amp;D</i> is reverted to forest land, except where it was covered by existing titles or approved applications, or actually occupied openly, continuously, adversely and publicly for at least 30 years <b>as of May 1975</b> by a free-patent-qualified occupant. This protects pre-1975 vested rights only.</p>"}
+  ]
+},
+{
+  heading:"Practical Checks for Brokers &amp; Appraisers",
+  tag:"REB / REA application",
+  sections:[
+    {num:"Check 1", title:"Verify the land classification", body:"<p>Before listing, valuing or financing rural or hilly land, confirm the parcel's classification against the DENR land classification map and the official records. A title that looks clean can still cover land that was never validly A&amp;D.</p>"},
+    {num:"Check 2", title:"Untitled land is not automatically \u201cbuildable\u201d", body:"<p>Occupancy, tax declarations and improvements on untitled land do not prove it is A&amp;D. Since the property may in fact be forest land, its market value for titling or transfer purposes may be nil or highly speculative — a key appraisal caution.</p>"},
+    {num:"Check 3", title:"Watch for Sec. 16 strips and buffers", body:"<p>Riverbanks, shorelines, mangrove fringes, ridge tops and watersheds carry forest-purpose restrictions even at low slopes. Boundaries between permanent forest and A&amp;D land should be marked with monuments at intervals of no more than 500 meters (Sec. 17).</p>"},
+    {num:"Check 4", title:"Certification standards changed in 2021", body:"<p>RA 11573 now allows a DENR-designated geodetic engineer's certification, imprinted on the approved survey plan, as proof of A&amp;D status for judicial confirmation — replacing the older reliance on the DENR Secretary's own certification. Older case law on CENRO/PENRO certifications (e.g., <i>T.A.N. Properties</i>) should be read with this reform in mind.</p>"}
+  ]
+}
+];
+
+/* ---------- Amendments & Related Laws ---------- */
+const relatedArticles = [
+{
+  heading:"Amendments to PD 705",
+  tag:"PD 865 · PD 1559 · BP 701 · EO 277 · RA 7161",
+  sections:[
+    {num:"PD 389 &rarr; PD 705", title:"Origin and repeals", body:"<p>PD 705 revised PD 389 (the Forestry Reform Code) and <span class='kw'>repealed CA 452</span> (Pasture Land Act) and inconsistent laws, rules and regulations.</p>"},
+    {num:"PD 865 (Dec 29, 1975)", title:"Early amendment", body:"<p>Amended PD 705 shortly after its issuance, including the log-processing/export rules of Sec. 32.</p>"},
+    {num:"PD 1559 (Jun 11, 1978)", title:"The principal amendment", body:"<p>Amended Secs. 3, 11, 14, 17, 20, 22, 26 and 30, and rewrote provisions such as Secs. 33–36, 53, 55, 61–63, 68, 69, 71 and 76 (penalties, incentives, transfers). Added new sections after Sec. 80 (including military/special-force enforcement support). Most annotated texts show PD 705 \u201cas amended by PD 1559.\u201d</p>"},
+    {num:"BP 701 (1984)", title:"Private tree farms", body:"<p>Exempts private landowners with tree farms of <span class='kw'>50 hectares or below</span>, planted to Ipil-ipil and other fast-growing trees, from inventory and related pre-harvest requirements, provided transported trees carry a certificate of origin issued by the authorized forest officer.</p>"},
+    {num:"EO 277 (Jul 25, 1987)", title:"Adds \u201cpossession\u201d", body:"<p>Amended Sec. 68 to cover <b>possession</b> of timber and forest products without legal documents, and added Secs. 68-A and 68-B on administrative enforcement.</p>"},
+    {num:"RA 7161 (1991)", title:"Renumbering", body:"<p>Renumbered penal provisions (original Sec. 68 \u2192 77; Sec. 69 \u2192 78) as reflected in annotated versions.</p>", trap:"When you see \u201cSec. 77\u201d or \u201cSec. 78\u201d cited for cutting or unlawful occupation, it's the renumbered version of Secs. 68 and 69."}
+  ]
+},
+{
+  heading:"Institutional &amp; Policy Layers",
+  tag:"EO 192 · EO 263 · EO 23",
+  sections:[
+    {num:"EO 192 (Jun 10, 1987)", title:"DENR", body:"<p>Reorganized the old Department of Natural Resources into the <span class='kw'>Department of Environment and Natural Resources (DENR)</span>; the Forest Management Bureau succeeded the Bureau of Forest Development. \u201cDepartment Head\u201d in PD 705 now reads as the DENR Secretary.</p>"},
+    {num:"EO 263 (Jul 19, 1995)", title:"Community-Based Forest Management", body:"<p>Adopts <span class='kw'>CBFM</span> as the national strategy for forestlands, moving from large concessions toward community stewardship.</p>"},
+    {num:"EO 23 (Feb 1, 2011)", title:"Logging moratorium", body:"<p>Declares a moratorium on cutting and harvesting timber in natural and residual forests nationwide.</p>"}
+  ]
+},
+{
+  heading:"Laws That Work With PD 705",
+  tag:"Land titling &amp; conservation",
+  sections:[
+    {num:"CA 141 Sec. 6", title:"Public Land Act", body:"<p>Sets the classification (A&amp;D, timber, mineral) and the President's power to classify and reclassify. Only A&amp;D land can be disposed of by homestead, sale, lease, free patent or judicial confirmation. See the CA 141 reviewer for details.</p>"},
+    {num:"1987 Const., Art. XII, Secs. 3–4", title:"Constitutional basis", body:"<p>Lands of the public domain are classified as agricultural, forest/timber, mineral lands and national parks; <b>only agricultural lands may be alienated</b>. Congress must fix the limits of forest lands and national parks, which cannot then be increased or diminished except by law.</p>"},
+    {num:"PD 1529", title:"Property Registration Decree", body:"<p>Land registration cannot cure inalienability: land that is still forest land is not registrable, whatever the paper trail.</p>"},
+    {num:"RA 7586 &amp; RA 11038", title:"NIPAS and Expanded NIPAS", body:"<p>Protected areas overlay forest land classification with additional conservation rules. Land within protected areas is subject to conservation and sustainable-use limits.</p>"},
+    {num:"RA 8371 (IPRA)", title:"Ancestral domains", body:"<p>Ancestral domains recognized under a CADT have a separate legal basis. The old PD 705 term \u201cnational minority\u201d in Sec. 3(mm) is now read alongside IPRA's recognition of indigenous cultural communities.</p>"},
+    {num:"RA 11573 (2021)", title:"A&amp;D proof reform", body:"<p>Makes proving A&amp;D status easier (DENR geodetic engineer's certification), but does not make forest land titleable — the A&amp;D classification must still exist.</p>"}
+  ]
+}
+];
+
+/* ---------- Board Exam Traps ---------- */
+const traps = [
+  {t:"Unclassified public land is forest land", b:"Under Sec. 3(a) and 3(d), land that has never been classified is \u201cpublic forest,\u201d which counts as forest land. Only land declared alienable and disposable can be titled."},
+  {t:"Classification is an executive act, never judicial or private", b:"Sec. 13 gives classification to the Department Head (now the DENR Secretary); CA 141 Sec. 6 gives the President the power to classify and reclassify. Courts, surveys and tax declarations don't."},
+  {t:"Forest land can never be titled — no matter how long the possession", b:"Possession of forest land, however long, never ripens into ownership. Only after a valid A&D declaration can free patent, homestead, sale, lease or judicial confirmation operate. A title over forest land is void and subject to reversion."},
+  {t:"Legal classification beats physical appearance", b:"A bare or farmed hillside remains forest land until reclassified; a wooded lot may be A&D. Check the classification, not the trees."},
+  {t:"Two slope thresholds: 18% and 50%", b:"18% or over cannot be classified A&D; 50% or over cannot be classified grazing land (Sec. 15). They apply to different classifications."},
+  {t:"The 18% slope also appears in CARP — separately", b:"RA 6657 Sec. 10 excludes land with 18% slope or over from CARP coverage unless already developed. Same number, different law and different purpose."},
+  {t:"The 30-year exception is measured as of PD 705's effectivity", b:"Sec. 15's exception protects occupants of 18%-or-over land who had occupied it openly, continuously, adversely and publicly for at least 30 years as of the Code's effectivity (May 1975) and were qualified for a free patent — not anyone who reaches 30 years today."},
+  {t:"Sec. 16 numbers to memorize", b:"250 ha (isolated areas far from A&D land), 5 ha (rocky or spring-protecting patches), 5 m (channel width of rivers/streams), 20 m (river, mangrove and lake-front strips)."},
+  {t:"Below 18% does not mean alienable", b:"Sec. 16 lists areas needed for forest purposes even below 18%: riverbank strips, mangrove and shoreline strips, ridge tops, reforested areas, reserves and more."},
+  {t:"A title over a Sec. 16 area can be cancelled", b:"The proviso of Sec. 16 allows steps to cancel or amend a title, or expropriate the area, when public interest requires."},
+  {t:"Lease vs. license vs. license agreement vs. permit", b:"Lease: occupy and possess for rent. License: use resources, no occupation or possession. License agreement: use resources WITH possession and occupation (except vs. government). Permit: short-term, limited use, no possession."},
+  {t:"Timber license: 25 + 25 years", b:"Sec. 27 sets a maximum of 25 years renewable for up to 25 more. Do not confuse with the 50-year basis for concession size (Sec. 28) or the 50-year lease for tree plantations (Sec. 34)."},
+  {t:"Tree plantation lease minimums", b:"Sec. 34: 100 hectares for industrial tree plantations and agro-forestry farms; 10 hectares for tree farms; 50-year lease."},
+  {t:"Replant three for every one cut", b:"Sec. 22 requires planting three trees of the same variety for each tree cut or destroyed; violation is ground for immediate cancellation of the license, agreement, lease or permit."},
+  {t:"Log export cap: 25% of the national allowable cut", b:"Sec. 32 limits total log exports by licensees to 25% of the total national allowable cut, and only for licensees who meet the conditions and have complied with replanting duties."},
+  {t:"Inventory rule: 5% inventory, made within the last 5 years", b:"Sec. 24 allows no timber harvest unless a 5% inventory (or statistically sound estimate) was made not earlier than 5 years before the license issues."},
+  {t:"Penalty numbers are two different regimes", b:"Cutting without license (Sec. 68/77): penalties of Articles 309 and 310, Revised Penal Code (theft/qualified theft). Unlawful occupation or kaingin (Sec. 69/78): \u20b1500\u2013\u20b120,000 fine, 6 months\u20132 years, plus 10× rental."},
+  {t:"Sec. 68 = Sec. 77 and Sec. 69 = Sec. 78", b:"RA 7161 renumbered these penal provisions. Always check which numbering a question uses."},
+  {t:"Warrantless arrest, but deliver within 6 hours", b:"Sec. 80 lets forest officers arrest without a warrant for offenses committed in their presence, and requires delivery of the offender and seized items within 6 hours."},
+  {t:"Reviewing DENR decisions: 30 days, then the President or certiorari", b:"A Department Head's decision on a Director's action is final and executory 30 days after receipt unless appealed to the President; courts may review only by certiorari or prohibition (Sec. 8)."},
+  {t:"Director's qualifications", b:"Natural-born citizen, at least 30 years old, Bachelor's degree in Forestry (or equivalent), registered forester (Sec. 6)."},
+  {t:"\u201cDepartment Head\u201d in PD 705 = the DENR Secretary today", b:"PD 705 predates the DENR (EO 192, 1987). Don't look for a \u201cSecretary of Natural Resources\u201d in current practice."},
+  {t:"RA 11573 eased proof of A&D status — it did not open forest land to titling", b:"The DENR geodetic engineer's certification proves land is already A&D. It cannot turn forest land into A&D land."}
+];
+
+/* ---------- Quiz ---------- */
+const quiz = [
+  {q:"PD 705 is officially known as:",
+   opts:["The Forestry Reform Code","The Revised Forestry Code of the Philippines","The Public Land Act","The National Integrated Protected Areas Act"], a:1,
+   ex:"PD 705 (May 19, 1975) is the Revised Forestry Code of the Philippines; it revised PD 389, the Forestry Reform Code."},
+  {q:"Who issued PD 705?",
+   opts:["Pres. Diosdado Macapagal","Pres. Ferdinand E. Marcos","Pres. Corazon Aquino","Pres. Fidel Ramos"], a:1,
+   ex:"President Ferdinand E. Marcos issued PD 705 on May 19, 1975."},
+  {q:"Under Sec. 3, \u201cforest land\u201d includes:",
+   opts:["Only permanent forests","Public forest, permanent forest or forest reserves, and forest reservations","Only national parks","Only land with trees"], a:1,
+   ex:"Sec. 3(d): forest land includes the public forest, the permanent forest or forest reserves, and forest reservations."},
+  {q:"Public land that has NOT yet been classified is treated as:",
+   opts:["Alienable and disposable","Grazing land","Public forest","Mineral land"], a:2,
+   ex:"Sec. 3(a) and Sec. 13: unclassified land remains public forest until classified."},
+  {q:"Who prescribes the criteria and methods for classifying public land under Sec. 13?",
+   opts:["The regional trial court","The Department Head (today, the DENR Secretary)","The barangay captain","The Registry of Deeds"], a:1,
+   ex:"Classification is an executive power — the Department Head under Sec. 13, alongside the President's classification power in CA 141 Sec. 6."},
+  {q:"Under Sec. 15, no public land with a slope of at least what percentage may be classified alienable and disposable?",
+   opts:["5%","18%","30%","50%"], a:1,
+   ex:"18% in slope or over cannot be classified A&D."},
+  {q:"Under Sec. 15, no forest land with a slope of at least what percentage may be classified as grazing land?",
+   opts:["18%","30%","50%","75%"], a:2,
+   ex:"50% in slope or over cannot be classified as grazing land."},
+  {q:"Which of the following is NOT one of the areas Sec. 16 says are needed for forest purposes?",
+   opts:["A 20-meter strip along a river with a channel at least 5 meters wide","Ridge tops and plateaus where headwaters emanate","An isolated forest patch of at least 5 hectares protecting a communal spring","A titled residential lot in a poblacion"], a:3,
+   ex:"Titled residential lots in built-up areas are not on the Sec. 16 list; the other three are."},
+  {q:"A parcel that has never been reclassified but has been cleared of trees and planted to crops for 40 years is:",
+   opts:["Alienable and disposable by long possession","Still forest land, and possession does not ripen into ownership","Automatically reclassified as agricultural","Titleable through a barangay certification"], a:1,
+   ex:"Legal classification controls, not appearance or length of possession (Amunategui, Muñoz)."},
+  {q:"The exception in Sec. 15 for land already declared A&D but 18% or over requires occupation for at least how long as of the Code's effectivity?",
+   opts:["10 years","20 years","30 years","50 years"], a:2,
+   ex:"At least 30 years as of PD 705's effectivity, by an occupant qualified for a free patent — or existing titles or approved applications."},
+  {q:"Boundaries between permanent forests and A&D lands must be marked with monuments at intervals of not more than:",
+   opts:["100 meters","250 meters","500 meters","1,000 meters"], a:2,
+   ex:"Sec. 17: concrete monuments at intervals of not more than 500 meters, or other visible signs."},
+  {q:"Who may establish forest reserves and forest reservations under Sec. 18?",
+   opts:["The barangay council","The President","The Register of Deeds","The provincial governor"], a:1,
+   ex:"The President may establish and modify forest reserves and reservations (Sec. 18)."},
+  {q:"A privilege to use forest resources WITH the right of possession and occupation, to the exclusion of others except the government, is a:",
+   opts:["Permit","License","License agreement","Pasture permit"], a:2,
+   ex:"That is the definition of a license agreement (Sec. 3(ee)). A license carries no right of occupation or possession."},
+  {q:"The maximum duration of a privilege to harvest timber under Sec. 27 is:",
+   opts:["10 years renewable for 10","25 years renewable for up to 25","50 years non-renewable","99 years"], a:1,
+   ex:"25 years, renewable for a period not exceeding 25 years."},
+  {q:"Under Sec. 22, an authorized logger must plant how many trees for every tree cut?",
+   opts:["One","Two","Three","Ten"], a:2,
+   ex:"Three trees of the same variety for every tree cut or destroyed."},
+  {q:"Under Sec. 34, the minimum area for an industrial tree plantation lease is:",
+   opts:["10 hectares","50 hectares","100 hectares","250 hectares"], a:2,
+   ex:"100 hectares for industrial tree plantations and agro-forestry farms; 10 hectares for tree farms; lease term of 50 years."},
+  {q:"Cutting timber from forest land without authority is punished under which provisions of the Revised Penal Code?",
+   opts:["Arts. 100–101","Arts. 309 and 310","Arts. 315–316","Arts. 248–249"], a:1,
+   ex:"Sec. 68 (now Sec. 77) applies the penalties for theft and qualified theft (Arts. 309 and 310)."},
+  {q:"The penalty for unlawful occupation or kaingin in forest land (Sec. 69) includes a fine of:",
+   opts:["\u20b1500 to \u20b120,000","\u20b15,000 to \u20b150,000","\u20b1100,000 to \u20b1500,000","\u20b11 million"], a:0,
+   ex:"\u20b1500\u2013\u20b120,000, imprisonment of 6 months to 2 years, and liability for 10 times the rental fees and other charges."},
+  {q:"After delivering an arrested forestry offender, a forest officer must turn over the offender and seized items within:",
+   opts:["6 hours","24 hours","48 hours","72 hours"], a:0,
+   ex:"Sec. 80: within six (6) hours from arrest and seizure, to the proper official."},
+  {q:"A Department Head decision reviewing the Director becomes final and executory after how many days from receipt, unless appealed to the President?",
+   opts:["10 days","15 days","30 days","60 days"], a:2,
+   ex:"Sec. 8: final and executory after 30 days from receipt; courts may review it only through certiorari or prohibition."},
+  {q:"Which law repealed by PD 705 covered pasture lands?",
+   opts:["CA 141","CA 452 (Pasture Land Act)","RA 6657","PD 1529"], a:1,
+   ex:"PD 705 repealed PD 389 and CA 452 (the Pasture Land Act), and inconsistent laws and rules."},
+  {q:"RA 11573's DENR geodetic engineer certification is used to prove that land is:",
+   opts:["Forest land that can now be titled","Already alienable and disposable","Exempt from CARP","A protected area"], a:1,
+   ex:"It proves A&D status; it does not convert forest land into titleable land."},
+  {q:"In PD 705 today, the \u201cDepartment Head\u201d refers in practice to the:",
+   opts:["Secretary of Agrarian Reform","Secretary of Natural Resources","DENR Secretary","Secretary of the Interior"], a:2,
+   ex:"The Department of Natural Resources became the DENR under EO 192 (1987)."}
+];
+
+/* ============================================================
+   RENDER HELPERS
+   ============================================================ */
+const viewRoot = document.getElementById('viewRoot');
+const topbarTitle = document.getElementById('topbarTitle');
+let currentTab = 'home';
+let quizIdx = 0, quizScore = 0, quizAnswered = false;
+
+function accordionHTML(articles){
+  return articles.map((art) => `
+    <div class="article-block">
+      <div class="article-heading"><span>${art.heading}</span><span class="tag">${art.tag}</span></div>
+      ${art.sections.map((s) => `
+        <div class="sec-card" data-search="${(s.title+' '+s.num+' '+s.body+(s.trap||'')).toLowerCase().replace(/"/g,'&quot;')}">
+          <button class="sec-head" onclick="toggleSec(this)">
+            <span class="sec-num">${s.num}</span>
+            <span class="sec-title">${s.title}</span>
+            <svg class="sec-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="sec-body"><div class="sec-body-inner">
+            ${s.body}
+            ${s.trap ? `<div class="trap-box"><span class="lbl">TRAP</span><span>${s.trap}</span></div>` : ''}
+          </div></div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function toggleSec(btn){
+  const card = btn.closest('.sec-card');
+  const body = card.querySelector('.sec-body');
+  const isOpen = card.classList.contains('open');
+  if(isOpen){
+    card.classList.remove('open');
+    body.style.maxHeight = null;
+  } else {
+    card.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 40 + 'px';
+  }
+}
+
+function renderHome(){
+  topbarTitle.textContent = 'Overview';
+  viewRoot.innerHTML = `
+    <div class="view-header">
+      <div class="eyebrow-row"><span class="badge-pill">PD 705 · 1975</span></div>
+      <h1 class="view-title">Revised Forestry Code — High Yield</h1>
+      <p class="view-sub">Covers REB General/Fundamentals and REA Land Management &amp; Real Property Laws — forest land vs. alienable and disposable land, who classifies public land, and why forest land can never be titled.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="n">18%</div><div class="l">Slope at or above which land can't be classified A&amp;D</div></div>
+      <div class="stat-card"><div class="n">50%</div><div class="l">Slope at or above which forest land can't be grazing land</div></div>
+      <div class="stat-card"><div class="n">25+25</div><div class="l">Max years of a timber license (Sec. 27)</div></div>
+      <div class="stat-card"><div class="n">0</div><div class="l">Years of possession that ripen forest land into ownership</div></div>
+    </div>
+
+    <div class="article-heading"><span>Timeline at a glance</span></div>
+    <div class="home-timeline">
+      ${timeline.map(t => `
+        <div class="tl-item">
+          <div class="tl-date">${t.date}</div>
+          <div class="tl-title">${t.title}</div>
+          <div class="tl-desc">${t.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="quicklinks">
+      <div class="qlink" onclick="switchTab('law')"><div class="qt">Read PD 705 →</div><div class="qd">Definitions, classification, utilization, and penal provisions — with highlighted numbers.</div></div>
+      <div class="qlink" onclick="switchTab('rules')"><div class="qt">Forest vs. A&amp;D Land →</div><div class="qd">The four rules, the physical tests, and practical checks for brokers/appraisers.</div></div>
+      <div class="qlink" onclick="switchTab('related')"><div class="qt">Amendments &amp; Related Laws →</div><div class="qd">PD 1559, BP 701, EO 192, EO 263, EO 23, CA 141, NIPAS, RA 11573.</div></div>
+      <div class="qlink" onclick="switchTab('quiz')"><div class="qt">Take the Quiz →</div><div class="qd">${quiz.length} self-test questions with instant explanations.</div></div>
+    </div>
+  `;
+}
+
+function renderLaw(){
+  topbarTitle.textContent = 'PD 705 — The Code';
+  viewRoot.innerHTML = `
+    <div class="view-header">
+      <div class="eyebrow-row"><span class="badge-pill">Presidential Decree No. 705</span></div>
+      <h1 class="view-title">The Revised Forestry Code, Section by Section</h1>
+      <p class="view-sub">Issued May 19, 1975 · as amended by PD 1559 (1978) and later issuances · Secs. 1–38 itemized; later provisions summarized by key rule.</p>
+    </div>
+    <div id="lawSections">${accordionHTML(raArticles)}</div>
+  `;
+}
+
+function renderRules(){
+  topbarTitle.textContent = 'Forest vs. A&D Land';
+  viewRoot.innerHTML = `
+    <div class="view-header">
+      <div class="eyebrow-row"><span class="badge-pill">Deep-dive</span></div>
+      <h1 class="view-title">Forest Land vs. Alienable &amp; Disposable Land</h1>
+      <p class="view-sub">The operative rules: who classifies, what the slope and location tests are, why forest land can never be titled, and how it affects brokers and appraisers.</p>
+    </div>
+    <div id="rulesSections">${accordionHTML(rulesArticles)}</div>
+  `;
+}
+
+function renderRelated(){
+  topbarTitle.textContent = 'Amendments & Related Laws';
+  viewRoot.innerHTML = `
+    <div class="view-header">
+      <div class="eyebrow-row"><span class="badge-pill">Amendments &amp; companions</span></div>
+      <h1 class="view-title">What Changed PD 705 — and What Works With It</h1>
+      <p class="view-sub">From PD 865 and PD 1559 to the DENR, CBFM, the logging moratorium, and the land-titling laws that depend on PD 705's classification rules.</p>
+    </div>
+    <div id="relatedSections">${accordionHTML(relatedArticles)}</div>
+  `;
+}
+
+function renderPeople(){
+  topbarTitle.textContent = 'Dates & People';
+  viewRoot.innerHTML = `
+    <div class="view-header">
+      <div class="eyebrow-row"><span class="badge-pill">Who &amp; When</span></div>
+      <h1 class="view-title">Key Dates &amp; People</h1>
+      <p class="view-sub">Officials, offices and landmark cases examiners attach to PD 705 questions.</p>
+    </div>
+    <div class="article-heading"><span>Full timeline</span></div>
+    <div class="home-timeline" style="margin-bottom:34px;">
+      ${timeline.map(t => `
+        <div class="tl-item" data-search="${(t.date+' '+t.title+' '+t.desc).toLowerCase().replace(/"/g,'&quot;')}">
+          <div class="tl-date">${t.date}</div>
+          <div class="tl-title">${t.title}</div>
+          <div class="tl-desc">${t.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="article-heading"><span>Key people, offices &amp; cases</span></div>
+    <div class="people-grid">
+      ${people.map(p => `
+        <div class="p-card" data-search="${(p.name+' '+p.role+' '+p.desc).toLowerCase().replace(/"/g,'&quot;')}">
+          <div class="p-name">${p.name}</div>
+          <div class="p-role">${p.role}</div>
+          <div class="p-desc">${p.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderGlossary(){
+  topbarTitle.textContent = 'Glossary';
+  viewRoot.innerHTML = `
+    <div class="view-header">
+      <div class="eyebrow-row"><span class="badge-pill">Terms</span></div>
+      <h1 class="view-title">Glossary of Terms</h1>
+      <p class="view-sub">Definitions from Sec. 3 and the classification system.</p>
+    </div>
+    <div class="glossary-grid">
+      ${glossary.map(g => `
+        <div class="g-card" data-search="${(g.term+' '+g.abbr+' '+g.def).toLowerCase().replace(/"/g,'&quot;')}">
+          <span class="g-term">${g.term}</span><span class="g-abbr">${g.abbr}</span>
+          <div class="g-def">${g.def}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderTraps(){
+  topbarTitle.textContent = 'Board Exam Traps';
+  viewRoot.innerHTML = `
+    <div class="view-header">
+      <div class="eyebrow-row"><span class="badge-pill">${traps.length} consolidated gotchas</span></div>
+      <h1 class="view-title">Board Exam Traps</h1>
+      <p class="view-sub">Classification-authority confusions, slope thresholds, instrument definitions, and renumbered sections.</p>
+    </div>
+    <div class="trap-list">
+      ${traps.map((t,i) => `
+        <div class="trap-item" data-search="${(t.t+' '+t.b).toLowerCase().replace(/"/g,'&quot;')}">
+          <div class="tnum">TRAP ${i+1}</div>
+          <div class="ttitle">${t.t}</div>
+          <div class="tbody">${t.b}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderQuiz(reset){
+  topbarTitle.textContent = 'Self-Test Quiz';
+  if(reset){ quizIdx = 0; quizScore = 0; }
+  quizAnswered = false;
+
+  if(quizIdx >= quiz.length){
+    viewRoot.innerHTML = `
+      <div class="view-header">
+        <div class="eyebrow-row"><span class="badge-pill">Results</span></div>
+        <h1 class="view-title">Quiz Complete</h1>
+      </div>
+      <div class="quiz-box">
+        <div class="quiz-score">${quizScore} / ${quiz.length} correct
+          <div class="sub">${quizScore === quiz.length ? "Perfect score — codal mastery." : quizScore/quiz.length >= 0.7 ? "Solid — review the misses and go again." : "Keep drilling the classification rules and numbers, then retake."}</div>
+        </div>
+        <div class="quiz-nav" style="justify-content:center;">
+          <button class="btn" onclick="renderQuiz(true)">Retake Quiz</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const item = quiz[quizIdx];
+  viewRoot.innerHTML = `
+    <div class="view-header">
+      <div class="eyebrow-row"><span class="badge-pill">Self-Test</span></div>
+      <h1 class="view-title">Forestry Code Quiz</h1>
+      <p class="view-sub">${quiz.length} questions drawn from PD 705 and its classification rules.</p>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-progress">Question ${quizIdx+1} of ${quiz.length} &nbsp;·&nbsp; Score so far: ${quizScore}</div>
+      <div class="quiz-q">${item.q}</div>
+      <div class="quiz-opts">
+        ${item.opts.map((o,i) => `<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-explain" id="quizExplain">${item.ex}</div>
+      <div class="quiz-nav">
+        <button class="btn ghost" onclick="renderQuiz(true)">Restart</button>
+        <button class="btn" id="quizNextBtn" style="opacity:.4; pointer-events:none;" onclick="nextQuiz()">Next →</button>
+      </div>
+    </div>
+  `;
+}
+
+function answerQuiz(i){
+  if(quizAnswered) return;
+  quizAnswered = true;
+  const item = quiz[quizIdx];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach((btn, idx) => {
+    btn.classList.add('disabled');
+    if(idx === item.a) btn.classList.add('correct');
+    else if(idx === i) btn.classList.add('wrong');
+  });
+  if(i === item.a) quizScore++;
+  document.getElementById('quizExplain').classList.add('show');
+  const nb = document.getElementById('quizNextBtn');
+  nb.style.opacity = 1;
+  nb.style.pointerEvents = 'auto';
+}
+
+function nextQuiz(){
+  quizIdx++;
+  renderQuiz(false);
+}
+
+/* ============================================================
+   TAB SWITCHING + SEARCH
+   ============================================================ */
+const renderers = {
+  home: renderHome, law: renderLaw, rules: renderRules, related: renderRelated,
+  people: renderPeople, glossary: renderGlossary, traps: renderTraps,
+  quiz: () => renderQuiz(true)
+};
+
+function switchTab(tab){
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.getElementById('searchInput').value = '';
+  renderers[tab]();
+  window.scrollTo(0,0);
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  const q = e.target.value.trim().toLowerCase();
+  const searchable = document.querySelectorAll('[data-search]');
+  if(!q){
+    searchable.forEach(el => el.classList.remove('hidden'));
+    document.querySelectorAll('.article-block, .article-heading').forEach(el => el.classList.remove('hidden'));
+    const nores = document.getElementById('noResults');
+    if(nores) nores.remove();
+    return;
+  }
+  let anyVisible = false;
+  searchable.forEach(el => {
+    const match = el.dataset.search.includes(q);
+    el.classList.toggle('hidden', !match);
+    if(match) anyVisible = true;
+    if(match && el.classList.contains('sec-card')){
+      el.classList.add('open');
+      const body = el.querySelector('.sec-body');
+      if(body) body.style.maxHeight = body.scrollHeight + 40 + 'px';
+    }
+  });
+  let nores = document.getElementById('noResults');
+  if(!anyVisible){
+    if(!nores){
+      nores = document.createElement('div');
+      nores.id = 'noResults';
+      nores.className = 'nores';
+      nores.textContent = 'No matches in this section. Try another tab.';
+      viewRoot.appendChild(nores);
+    }
+  } else if(nores){
+    nores.remove();
+  }
+});
+
+/* init */
+renderHome();
+</script>
+</body>
+</html>
